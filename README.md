@@ -7,8 +7,9 @@ through the env at `MAKEFUN_ENV_URL` and exits when the env reports done.
 ## How it works
 
 - 0x88 board, fully legal move generation (castling, en passant, promotions).
-- Negamax alpha-beta search with a fixed node budget (24,000 nodes a move) —
-  never a clock, so every trial replays move for move.
+- Negamax alpha-beta search with a fixed node budget (45,000 nodes a move) —
+  never a clock, so every trial replays move for move. Root uses PVS
+  (null-window probes with re-search) plus futility pruning at depth ≤ 2.
 - Transposition table (Zobrist), null-move pruning, late-move reductions,
   check extensions, killer-move ordering, MVV-LVA capture ordering.
 - Quiescence search over captures and check evasions.
@@ -21,5 +22,11 @@ through the env at `MAKEFUN_ENV_URL` and exits when the env reports done.
 
 - Python 3.13, standard library only; reads no other file of the repository.
 - No model calls, no network beyond the env, no randomness, no wall clock.
+
+## Local practice
+
+Trial-0 against the kit's house gauntlet (local): 3 wins, 1 draw, 12 losses —
+Elo 1,040 (swept depth-2, drew depth-3, beat nodes-250k once). Below the
+sunfish baseline (~1,360), so this is an honest long shot.
 
 MIT licensed, see LICENSE.
